@@ -7,10 +7,16 @@ if [[ -z $SIZE ]]; then
     exit 1
 fi
 
+if [[ -n $CACHE && "$CACHE" == 1 ]]; then
+    echo "gz caching is enabled"
+else
+  echo "gz caching is disabled, files will be destroyed after each test"
+fi
+
 echo "Platform: $PLATFORM"
 if [[ -z "$PLATFORM" || "$PLATFORM" != "mac" ]]; then
   field=2
-  opts="-p "
+  opts="-p"
   echo "Using Linux opts"
 else
   field=1
@@ -35,6 +41,9 @@ for level in ${levels}; do
         fi
         unziptime=$(/usr/bin/time $opts gunzip -k -f ${TEST_DIR}/test-${level}-${gziplevel}-${SIZE}.txt.gz 2>&1 | grep real | sed -E "s/^ +//g" | cut -f $field -d " ")
         rm -rf ${TEST_DIR}/test-${level}-${gziplevel}-${SIZE}.txt
+        if [[ -z "$CACHE" || "$CACHE" != 1 ]]; then
+          rm -rf ${TEST_DIR}/test-${level}-${gziplevel}-${SIZE}.txt.gz
+        fi
         echo "Unzipped: ${unzipped} -> Ziptime: ${ziptime} -> Zipped: ${zipped} -> Unziptime: ${unziptime}"
         printf "${level},${gziplevel},${unzipped},${ziptime},${zipped},${unziptime}\n" >> results.csv
     done

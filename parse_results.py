@@ -60,6 +60,8 @@ plt.legend()
 plt.xlabel('gzip compression level')
 plt.ylabel('decompression time (s)')
 
+plt.savefig('results.png')
+
 res = {}
 for fc in func:
     mean = np.mean([np.mean(func[fc][x]) for x in func[fc]])
@@ -70,5 +72,4 @@ for fc in func:
 
 # print sorted by key
 print("\n".join([res[x] for x in sorted(res, reverse=True)]))
-plt.savefig('results.png')
 

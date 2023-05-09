@@ -1,4 +1,3 @@
 files
-results/
-results*.csv
+results*
 tests*
