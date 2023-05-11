@@ -107,7 +107,7 @@ We first started by analyzing the compression and decompression times of
 files generated with some popular random data generators. We generated files
 with the following tools [cite:@strandbergLorem2022]:
 
-- ~od --format=x /dev/urandom~
+- ~od --format=x /dev/urandom | head -c 1G~
 - ~base64 /dev/urandom | head -c 1G~
 - ~cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 1G~
 - ~openssl rand -out myfile "$( echo 1G | numfmt --from=iec )"~
