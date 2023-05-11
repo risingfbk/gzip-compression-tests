@@ -1,9 +1,9 @@
 #!/bin/zsh
 
-SIZE_WITHPREFIX="1G"
-SIZE_NOPREFIX="1000000000"
+SIZE_WITHPREFIX="100M"
+SIZE_NOPREFIX="100000000"
 echo "Generating files with size ${SIZE_WITHPREFIX}..."
-formats=("x1" "x2" "x4" "x8" "a" "c" "d1" "d2" "d4" "d8" "f" "o" "u1" "u2" "u4" "u8")
+formats=("x" "a" "c" "d1" "d2" "d4" "d8" "f" "o" "u1" "u2" "u4" "u8")
 # i=0
 # for format in ${formats}; do
 #     printf "Format: ${format}->$((i + 10))\n"
