@@ -130,6 +130,10 @@ else:
 
 plt.xlabel('gzip compression level')
 plt.ylabel('decompression time (s)')
+plt.xticks([1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+# draw a dashed line at place 6
+plt.axvline(x=6, color='k', linestyle='--', alpha=0.5)
 
 if args.pgf:
     plt.savefig(args.path.replace('.csv', f'.{EXT}'), bbox_inches='tight', bbox_extra_artists=(lgd,))
