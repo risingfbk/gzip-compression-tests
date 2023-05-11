@@ -21,6 +21,9 @@
 #+LATEX_HEADER: \usepackage{lmodern}
 #+LATEX_HEADER: \usepackage{import}
 #+LATEX_HEADER: \usepackage{layouts}
+#+LATEX_HEADER: \usepackage{supertabular}
+#+LATEX_HEADER: \usepackage{xtab,afterpage}
+#+LATEX_HEADER: \usepackage{makecell}
 
 # show section numbers
 #+LATEX_HEADER: \setcounter{secnumdepth}{3}
@@ -82,28 +85,21 @@ containing English text.
 
 ** System setup
 
-We run our experiments on two machines, one with a 4-core Intel(R) Xeon(R)
-Silver 4112 CPU @ 2.60GHz and 64GB of RAM, and a MacBook Pro (late 2020) with
-a M1 chip and 16GB of RAM. The first machine runs Ubuntu 20.04.2 LTS, while
-the MacBook runs macOS Ventura 13.3.1 (a). We used gzip version 1.12 on both
-machines. Finally, tests were run in isolation and with CPU pinning, in order
-to reduce the impact of other processes on the results, and were run multiple
-times to reduce the impact of noise.
+We run our experiments on a machine with a 4-core Intel Xeon Silver 4112 CPU
+@ 2.60GHz, 64GB of RAM, running Ubuntu Server 20.04.2 LTS. We used ~gzip~
+version 1.12 on both machines. Tests were run in isolation and with
+CPU pinning, in order to reduce the impact of other processes on the results,
+and were run 5 times to reduce the impact of noise.
 
 Our tests comprised the following steps:
-1. Generate a file with a given size and content
+
+1. Generate a file of 100MB in size, with a specific content
 2. Compress the file with gzip
 3. Decompress the file with gzip
 
 We measured the time taken by each step, the size of the compressed and
 uncompressed files, the CPU usage, and the compression ratios. We repeated
 this test for each of ~gzip~'s compression levels (1-9). 
-
-Furthermore, we executed tests both with files between 100MB and 1GB in size, in
-order to verify if a file's size impacted the results [
-However, we found that
-the results were comparable, and thus we only report the results for files of
-size 1GB.
 
 ** Popular tools
 
@@ -122,7 +118,7 @@ described above. The decompression times are shown in \autoref{fig:popular-tools
 
 \begin{figure}
   \begin{center}
-    \input{./drawable/results-1G.pgf}
+    \input{./drawable/results-v1.pgf}
   \end{center}
   \caption{Decompression times for files generated with popular tools.}
   \label{fig:popular-tools}
@@ -142,12 +138,18 @@ Wishing to understand why ~od~'s output was decompressed slower than the
 others, we decided to fully leverage ~od~'s various output formats. We thus
 generated files with the following output formats:
 
-- ~x1~, ~x2~, ~x4~, ~x8~ (hexadecimal)
+- ~x~ (hexadecimal)
 - ~a~, ~c~ (ASCII both named and unnamed)
 - ~d1~, ~d2~, ~d4~, ~d8~ (decimal)
 - ~f~ (floating point)
 - ~o~ (octal)
 - ~u1~, ~u2~, ~u4~, ~u8~ (unsigned decimal)
+
+We decided to use the decimal and unsigned decimal format variants with 1, 2,
+4, and 8 bytes in order to see if the size of the numbers (and the minus sign
+in decimal formats) had any impact on the decompression time. It must be
+remembered we voluntarily un-padded the results of ~od~, and thus, the files
+are comprised of a single line of content with no spaces or newlines.
 
 We repeated the same tests as before, and the results are shown in
 \autoref{fig:od-output}, although with 100MB files instead of 1GB files, due
@@ -155,16 +157,16 @@ to the long time required to generate the files.
 
 \begin{figure}[h!]
   \begin{center}
-    \input{./drawable/results-multiod-100M.pgf}
+    \input{./drawable/results-od.pgf}
   \end{center}
   \caption{Decompression times for files generated with ~od~'s various output formats.}
   \label{fig:od-output}
 \end{figure}
 
 We can see that the decompression times vary significantly depending on the
-output format chosen. For our nefarious purposes, the best output formats are
-~a~ and ~c~ (ASCII named and unnamed), although ~x2~ slightly outperforms
-both at level 6, which is the default compression level.
+output format chosen. For our nefarious purposes, the best output formats (at
+level 6, the default one) are ~a~ and ~c~ (ASCII named and unnamed), although
+~x~ almost matches them.
 
 ** Finding the optimal file
 
@@ -173,14 +175,49 @@ Finally, the graph in \autoref{fig:all} shows the decompression times for
 
 \begin{figure}[h]
   \begin{center}
-    \input{./drawable/results-v2-1G.pgf}
+    \input{./drawable/results-v2.pgf}
   \end{center}
   \caption{Decompression times for files generated with ~od~'s best output formats and the other tools.}
   \label{fig:all}
 \end{figure}
 
+** Other results
 
+To verify that our results were not specific to our machine, we also ran the
+same tests on a MacBook Pro (late 2020) with an M1 CPU, 16GB of RAM, and
+running macOS Ventura 13.3.1 (a). We used the same version of ~gzip~ as on
+Ubuntu (1.12). Results were similar, although the MacBook Pro was on average
+faster than the Ubuntu machine. We thus do not include the results in this
+report.
+
+Furthermore, we tried various file sizes, between 100MB and 1GB, in order to
+verify there was also no correlation between the file size and the results.
+Again, we found that the results were comparable, and thus we only reported
+the results once for the 100MB files.
+
+
+* Conclusions
+
+We have shown that the decompression time of a file can vary significantly
+depending on the content of the file and the compression level used. Indeed,
+we have shown that the decompression time of a file can be increased by a
+factor of 3 when files are filled with datafrom ~od~'s ~a~ and ~c~ output formats,
+when compared to the decompression time of a file containing English text.
+
+We believe that this is a serious issue, as it can be used to artificially
+increase the decompression time of a file, which can be used to slow down
+systems that rely on gzip for decompression. For example, this could be used
+to slow down the unpacking of Docker images, which use gzip for compression
+of the various layers.
 
 * Bibliography
 
 #+PRINT_BIBLIOGRAPHY:
+
+* Appendix
+
+The following are the full results of our tests for the last graph in the
+previous section. 
+
+\input{results-v2.tex}
+

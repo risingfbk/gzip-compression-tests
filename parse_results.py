@@ -10,21 +10,21 @@ def convert_from_prefix(number: str):
     if number[-1] == 'k':
         return float(number[:-1]) * 1000
     elif number[-1] == 'm':
-        return float(number[:-1]) * 1000000
+        return float(number[:-1]) * 1000 * 1000
     elif number[-1] == 'g':
-        return float(number[:-1]) * 1000000000
+        return float(number[:-1]) * 1000 * 1000 * 1000
     else:
         return float(number)
     
 def convert_to_prefix(number: float):
-    if number < 1000:
+    if number < 1024:
         return f'{number:.0f}'
-    elif number < 1000000:
-        return f'{number/1000:.0f}k'
-    elif number < 1000000000:
-        return f'{number/1000000:.0f}M'
+    elif number < 1024 * 1024:
+        return f'{number/1024:.0f}k'
+    elif number < 1024 * 1024 * 1024:
+        return f'{number/(1024 * 1024):.0f}M'
     else:
-        return f'{number/1000000000:.0f}G'
+        return f'{number/(1024 * 1024 * 1024):.0f}G'
 
 mapper = {
     1: './lorem/lorem -c 1000000000',
@@ -156,8 +156,11 @@ decompr_time = {k: v for k, v in sorted(decompr_time.items(), key=lambda item: m
 
 with open(f'{args.path.split(".")[0]}.tex', 'w') as f:
     for fc in decompr_time:
+        f.write(f"\hline\n")
+        f.write(f"\multicolumn{{5}}{{c}}{{{mapper[fc][:14]}...}} \\\\\n")
         for x in decompr_time[fc]:
-            f.write(f"{mapper[fc]} & {x} & {convert_to_prefix(np.mean(uncompressed[fc][x]))} & {convert_to_prefix(np.mean(compressed[fc][x]))} & {np.mean(compr_time[fc][x]):.3f} & {np.mean(decompr_time[fc][x]):.3f} \\\\\n")
+            ratio = np.mean(compressed[fc][x]) / np.mean(uncompressed[fc][x])
+            f.write(f"{x} & {ratio:.3f} & {convert_to_prefix(np.mean(compressed[fc][x]))} & {np.mean(compr_time[fc][x]):.3f} & {np.mean(decompr_time[fc][x]):.3f} \\\\\n")
 
 func = decompr_time
 

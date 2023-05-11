@@ -1,1 +1,1 @@
-for i in results/results*.csv; do python3 parse_results.py --path $i --pgf; done; mv results/*.pgf report/drawable; for i in results/results-multiod-100M.csv; do python3 parse_results.py --od --path $i --pgf; done; mv results/*.pgf report/drawable
+for i in results/results*.csv; do python3 parse_results.py --path $i --pgf; done; mv results/*.pgf report/drawable; for i in results/results-od.csv; do python3 parse_results.py --od --path $i --pgf; done; mv results/*.pgf report/drawable
