@@ -1,7 +1,6 @@
 files
 results*
 tests*
-report/*.tex
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
