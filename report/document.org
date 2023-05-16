@@ -22,7 +22,7 @@
 #+LATEX_HEADER: \usepackage{import}
 #+LATEX_HEADER: \usepackage{layouts}
 #+LATEX_HEADER: \usepackage{supertabular}
-#+LATEX_HEADER: \usepackage{xtab,afterpage}
+#+LATEX_HEADER: \usepackage{booktabs}
 #+LATEX_HEADER: \usepackage{makecell}
 
 # show section numbers

@@ -1,4 +1,4 @@
-% Created 2023-05-11 Thu 15:26
+% Created 2023-05-12 Fri 15:21
 % Intended LaTeX compiler: pdflatex
 \documentclass[a4paper,10pt,compsoc,conference]{IEEEtran}
 \usepackage[utf8]{inputenc}
@@ -62,7 +62,7 @@
 \setlength{\parskip}{1pt}
 
 \section{Introduction}
-\label{sec:orgbf69b7c}
+\label{sec:org59100cf}
 
 Despite the development of more recent compression techniques like \texttt{bzip2}
 and \texttt{xz,} \texttt{gzip} is still a well-liked UNIX compression tool. Gzip is
@@ -85,10 +85,10 @@ we show that the decompression time of a file can be increased by a factor of
 containing English text.
 
 \section{Results}
-\label{sec:org27037a0}
+\label{sec:orgaa19a4e}
 
 \subsection{System setup}
-\label{sec:org10faca4}
+\label{sec:org65c231c}
 
 We run our experiments on a machine with a 4-core Intel Xeon Silver 4112 CPU
 @ 2.60GHz, 64GB of RAM, running Ubuntu Server 20.04.2 LTS. We used \texttt{gzip}
@@ -109,7 +109,7 @@ uncompressed files, the CPU usage, and the compression ratios. We repeated
 this test for each of \texttt{gzip}'s compression levels (1-9). 
 
 \subsection{Popular tools}
-\label{sec:orga0e3bd6}
+\label{sec:orged4bfa8}
 
 We first started by analyzing the compression and decompression times of
 files generated with some popular random data generators. We generated files
@@ -143,7 +143,7 @@ seconds to be decompressed, depending on the compression level used. Finally,
 \texttt{od}'s output is decompressed in 9 seconds. 
 
 \subsection{\texttt{od}'s output}
-\label{sec:org27060b5}
+\label{sec:org8fc9755}
 
 Wishing to understand why \texttt{od}'s output was decompressed slower than the
 others, we decided to fully leverage \texttt{od}'s various output formats. We thus
@@ -182,7 +182,7 @@ level 6, the default one) are \texttt{a} and \texttt{c} (ASCII named and unnamed
 \texttt{x} almost matches them.
 
 \subsection{Finding the optimal file}
-\label{sec:orgf7c9361}
+\label{sec:orgb696b22}
 
 Finally, the graph in \autoref{fig:all} shows the decompression times for
 \texttt{od}'s best output formats along with the other tools.
@@ -196,7 +196,7 @@ Finally, the graph in \autoref{fig:all} shows the decompression times for
 \end{figure}
 
 \subsection{Other results}
-\label{sec:orgb1809d0}
+\label{sec:org92b14ce}
 
 To verify that our results were not specific to our machine, we also ran the
 same tests on a MacBook Pro (late 2020) with an M1 CPU, 16GB of RAM, and
@@ -212,7 +212,7 @@ the results once for the 100MB files.
 
 
 \section{Conclusions}
-\label{sec:orgd43c62f}
+\label{sec:org454d1db}
 
 We have shown that the decompression time of a file can vary significantly
 depending on the content of the file and the compression level used. Indeed,
@@ -227,13 +227,13 @@ to slow down the unpacking of Docker images, which use gzip for compression
 of the various layers.
 
 \section{Bibliography}
-\label{sec:org69fa9ca}
+\label{sec:orgb496fd7}
 
 \bibliographystyle{plain}
 \bibliography{/Users/matte/Codice/fbk/gziptests/report/gzip}
 
 \section{Appendix}
-\label{sec:org6bcffaf}
+\label{sec:orgcd65552}
 
 The following are the full results of our tests for the last graph in the
 previous section. 
