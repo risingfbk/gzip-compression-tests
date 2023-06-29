@@ -1,5 +1,5 @@
 files
-results/*
+results/*.tex
 tests*
 
 ## Core latex/pdflatex auxiliary files:
