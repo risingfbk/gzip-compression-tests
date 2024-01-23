@@ -1,6 +1,6 @@
 # On Exploiting `gzip`’s Content-Dependent Compression
 
-This repository contains a small side project developed during research on Kubernetes and `containerd` security.
+This repository contains a small side project developed during the *Exploiting Kubernetes' Image Pull Implementation to Deny Node Availability* research effort, whose code is available [here](https://github.com/risingfbk/magi).
 
 It aims to investigate the behaviour of the `gzip` program when random data is fed to it. Indeed, due to how the DEFLATE algorithm is implemented, different types of random data generated with different tools result in different output size, compression time, and decompression time.
 
